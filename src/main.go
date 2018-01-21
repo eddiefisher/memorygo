@@ -7,13 +7,25 @@
 package main
 
 import (
-    "fmt"
-	"github.com/eddiefisher/memorygo/src/version"
+	"fmt"
+	"net"
+
+	"github.com/eddiefisher/memorygo/src/store"
+	"github.com/eddiefisher/memorygo/src/transport"
+)
+
+var (
+	network = "tcp"
+	address = "127.0.0.1:33600"
 )
 
 func main() {
-    fmt.Printf(
-		"Starting the service...\ncommit: %s, build time: %s, release: %s",
-		version.Commit, version.BuildTime, version.Release,
-	)
+	go transport.Start(network, address, Handle)
+	store.Set("1", "2")
+	store.Set("2", "3")
+	fmt.Println(store.Messages)
+	store.Delete("1")
+	fmt.Println(store.Messages)
 }
+
+func Handle(conn net.Conn) {}

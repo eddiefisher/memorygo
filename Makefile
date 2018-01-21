@@ -33,7 +33,7 @@ runc: container
 # Build the project
 build:
 	cd ./src ; go build ${LDFLAGS} -o ../bin/${APP}
-	sh -c ./bin/${APP}
+	upx ./bin/${APP}
 
 # Run the project
 run:
@@ -42,3 +42,6 @@ run:
 # Test the project
 test:
 	cd ./src ; go test -v -race ./...
+
+dep:
+	cd ./src ; dep ensure
